@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#a92f20">
+  <meta name="description" content="Create and print a QR code for the BTW Faridabad menu.">
+  <title>BTW Menu QR Code</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --red: #a92f20;
+      --red-dark: #7d2118;
+      --gold: #d9a441;
+      --ink: #28241f;
+      --muted: #77716a;
+      --line: #eee7dc;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink);
+      background: #faf8f4;
+    }
+
+    * { box-sizing: border-box; }
+    .hidden { display: none !important; }
+    body { min-height: 100vh; display: grid; place-items: center; margin: 0; padding: 25px 16px; }
+    main { width: min(100%, 510px); }
+    .brand { display: flex; align-items: center; justify-content: center; gap: 11px; margin-bottom: 20px; }
+    .brand-mark {
+      width: 44px;
+      height: 44px;
+      display: grid;
+      place-items: center;
+      border: 2px solid var(--gold);
+      border-radius: 50%;
+      color: white;
+      background: var(--red);
+      font-family: Georgia, serif;
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: -1.5px;
+    }
+    .brand-name { color: var(--red); font-size: 19px; font-weight: 850; letter-spacing: 1.4px; }
+    .brand-sub { margin-top: 1px; color: var(--muted); font-size: 10px; font-weight: 700; letter-spacing: 2px; }
+    .panel { padding: clamp(22px, 6vw, 38px); border: 1px solid var(--line); border-radius: 20px; background: white; box-shadow: 0 14px 44px rgba(47, 33, 20, .08); text-align: center; }
+    h1 { margin: 0; font-family: Georgia, "Times New Roman", serif; font-size: clamp(28px, 7vw, 37px); font-weight: 500; }
+    .intro { margin: 9px auto 23px; color: var(--muted); font-size: 14px; line-height: 1.65; }
+    .field-label { display: block; margin: 0 0 7px; font-size: 12px; font-weight: 750; text-align: left; }
+    .url-input { width: 100%; height: 47px; padding: 0 13px; border: 1px solid #e9e3da; border-radius: 10px; outline: none; background: #faf9f7; font: inherit; font-size: 13px; }
+    .url-input:focus { border-color: var(--gold); background: white; box-shadow: 0 0 0 4px rgba(217, 164, 65, .13); }
+    .generate-button, .print-button { min-height: 45px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 0; border-radius: 9px; font: inherit; font-size: 13px; font-weight: 750; cursor: pointer; }
+    .generate-button { width: 100%; margin-top: 11px; color: white; background: var(--red); transition: background .2s; }
+    .generate-button:hover { background: var(--red-dark); }
+    .message { min-height: 18px; margin: 9px 0 0; color: var(--red-dark); font-size: 12px; text-align: left; }
+    .qr-result { display: none; margin-top: 9px; }
+    .qr-result.show { display: block; animation: enter .3s both; }
+    .qr-frame { width: min(100%, 300px); aspect-ratio: 1; display: grid; place-items: center; margin: 5px auto 13px; padding: 9px; border: 1px solid var(--line); border-radius: 13px; background: white; }
+    .qr-image { width: 100%; height: 100%; object-fit: contain; }
+    .qr-caption { overflow-wrap: anywhere; margin: 0 auto 14px; color: var(--muted); font-size: 11px; line-height: 1.5; }
+    .print-button { width: 100%; color: var(--red); border: 1px solid #e9d7b8; background: #fffdf9; }
+    .print-button:hover { background: #fff4ee; }
+    .hint { margin: 19px 0 0; padding: 12px; border-radius: 9px; color: #70695f; background: #faf8f4; font-size: 11px; line-height: 1.6; text-align: left; }
+    .back-link { display: block; margin: 18px 0 0; color: var(--red-dark); font-size: 12px; font-weight: 700; text-align: center; }
+    @keyframes enter { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; } }
+    @media print {
+      :root { background: white; }
+      body { min-height: 0; display: block; padding: 0; }
+      .brand, .intro, .url-form, .hint, .back-link, .qr-caption { display: none !important; }
+      main { width: 100%; }
+      .panel { border: 0; border-radius: 0; box-shadow: none; }
+      h1 { margin: 0 0 12px; font-size: 25px; }
+      .qr-result { display: block; margin: 0; }
+      .qr-frame { width: min(85vw, 390px); margin: 0 auto; border: 0; }
+      .print-button { display: none; }
+      .qr-result.show::after { display: block; margin-top: 5px; content: "Scan to view the BTW Faridabad menu"; font-size: 12px; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="brand" aria-label="BTW Sweets and Snacks">
+      <span class="brand-mark" aria-hidden="true">BTW</span>
+      <span><span class="brand-name">BTW</span><span class="brand-sub">SWEETS · SNACKS</span></span>
+    </div>
+    <section class="panel" aria-labelledby="title">
+      <h1 id="title">Your menu, one scan away.</h1>
+      <p class="intro">Enter the public link to your BTW menu to make a QR code customers can scan with their phone camera.</p>
+      <form class="url-form" id="qr-form">
+        <label class="field-label" for="menu-url">Public menu link</label>
+        <input class="url-input" id="menu-url" name="menu-url" type="url" placeholder="https://yourname.github.io/your-menu/" autocomplete="url" required>
+        <button class="generate-button" type="submit">Create my QR code</button>
+        <p class="message" id="message" role="status" aria-live="polite"></p>
+      </form>
+      <div class="qr-result" id="qr-result">
+        <div class="qr-frame"><img class="qr-image" id="qr-image" alt="QR code that opens the BTW Faridabad menu"></div>
+        <p class="qr-caption" id="qr-caption"></p>
+        <button class="print-button" id="print-button" type="button">Print QR code</button>
+      </div>
+      <p class="hint">First, publish <strong>index.html</strong> on GitHub Pages. When this QR tool is opened on your published GitHub Pages site, it fills in your menu address automatically. You can also paste the menu link here yourself. The QR image is generated using QR Server, which receives the public link you enter.</p>
+    </section>
+    <a class="back-link hidden" id="menu-link" href="index.html">← Back to the BTW menu</a>
+  </main>
+
+  <script>
+    const form = document.querySelector("#qr-form");
+    const menuUrlInput = document.querySelector("#menu-url");
+    const qrResult = document.querySelector("#qr-result");
+    const qrImage = document.querySelector("#qr-image");
+    const qrCaption = document.querySelector("#qr-caption");
+    const message = document.querySelector("#message");
+
+    function makeQr(menuUrl) {
+      const address = menuUrl.trim();
+      let parsedUrl;
+
+      try {
+        parsedUrl = new URL(address);
+      } catch {
+        message.textContent = "Enter a valid public HTTPS menu link.";
+        return;
+      }
+
+      if (parsedUrl.protocol !== "https:" || parsedUrl.hostname.length === 0) {
+        message.textContent = "Your public menu link needs to start with https://.";
+        return;
+      }
+
+      message.textContent = "";
+      qrResult.classList.remove("show");
+      qrCaption.textContent = address;
+      qrImage.alt = `QR code that opens ${address}`;
+      qrImage.src = `https://api.qrserver.com/v1/create-qr-code/?size=800x800&format=png&ecc=H&margin=12&data=${encodeURIComponent(address)}`;
+      qrImage.onload = () => qrResult.classList.add("show");
+      qrImage.onerror = () => {
+        qrResult.classList.remove("show");
+        message.textContent = "Could not load the QR code. Check your internet connection and try again.";
+      };
+    }
+
+    form.addEventListener("submit", event => {
+      event.preventDefault();
+      makeQr(menuUrlInput.value);
+    });
+
+    document.querySelector("#print-button").addEventListener("click", () => window.print());
+
+    const hostedMenuUrl = new URL("index.html", window.location.href);
+    if (window.location.protocol === "https:" && hostedMenuUrl.origin !== "null") {
+      menuUrlInput.value = hostedMenuUrl.href;
+      document.querySelector("#menu-link").classList.remove("hidden");
+      makeQr(hostedMenuUrl.href);
+    }
+  </script>
+</body>
+</html>
