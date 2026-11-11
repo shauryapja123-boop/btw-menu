@@ -164,6 +164,7 @@
     .price-note { color: #82796f; font-size: 10px; font-weight: 600; }
     .add-link { padding: 6px 11px; border: 1px solid #e9d7b8; border-radius: 7px; color: var(--red); background: #fffdf9; font-size: 10px; font-weight: 800; transition: background .2s, border-color .2s; }
     .add-link:hover { border-color: var(--red); background: #fff4ee; }
+    .add-link:disabled { border-color: #e9e5df; color: #888078; background: #f7f5f2; cursor: not-allowed; }
 
     .empty-state { display: none; padding: 44px 16px; color: var(--muted); text-align: center; }
     .empty-state.show { display: block; }
@@ -178,6 +179,105 @@
     footer strong { color: var(--red); letter-spacing: 1px; }
     .toast { position: fixed; z-index: 10; right: 18px; bottom: 18px; max-width: calc(100vw - 36px); padding: 12px 16px; border-radius: 10px; color: white; background: #302a24; box-shadow: var(--shadow); font-size: 12px; opacity: 0; pointer-events: none; transform: translateY(10px); transition: opacity .2s, transform .2s; }
     .toast.show { opacity: 1; transform: translateY(0); }
+    .cart-bar { position: fixed; z-index: 8; right: 20px; bottom: 20px; left: 20px; width: min(460px, calc(100% - 40px)); min-height: 58px; display: none; align-items: center; justify-content: space-between; gap: 16px; margin: 0 auto; padding: 9px 11px 9px 18px; border: 0; border-radius: 11px; color: white; background: var(--green); box-shadow: 0 8px 26px rgba(27, 74, 44, .25); text-align: left; cursor: pointer; }
+    .cart-bar.show { display: flex; animation: enter .2s both; }
+    .cart-summary { font-size: 12px; font-weight: 750; }
+    .cart-total { font-size: 15px; font-weight: 850; }
+    .cart-bar-hint { display: block; margin-top: 2px; color: rgba(255,255,255,.78); font-size: 10px; font-weight: 500; }
+    .cart-open { padding: 9px 12px; border-radius: 7px; color: var(--green); background: white; font-size: 11px; font-weight: 800; }
+    .cart-dialog { width: min(520px, calc(100% - 24px)); max-height: min(88vh, 760px); padding: 0; border: 0; border-radius: 14px; color: var(--ink); box-shadow: 0 20px 70px rgba(30, 25, 20, .3); }
+    .cart-dialog::backdrop { background: rgba(31, 25, 20, .55); backdrop-filter: blur(3px); }
+    .cart-dialog-inner { padding: 22px; }
+    .cart-dialog-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+    .cart-dialog h2 { margin: 0; font-family: Georgia, serif; font-size: 25px; font-weight: 500; }
+    .cart-dialog-intro { margin: 5px 0 15px; color: var(--muted); font-size: 12px; }
+    .dialog-close { width: 34px; height: 34px; border: 0; border-radius: 50%; color: #625a51; background: #f5f2ed; font-size: 21px; cursor: pointer; }
+    .cart-items { max-height: 210px; overflow-y: auto; border-top: 1px solid var(--line); }
+    .cart-row { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--line); }
+    .cart-item-name { font-size: 12px; font-weight: 700; }
+    .cart-item-price { margin-top: 3px; color: var(--muted); font-size: 11px; }
+    .quantity-control { display: flex; align-items: center; gap: 8px; }
+    .quantity-control button { width: 28px; height: 28px; border: 1px solid var(--line); border-radius: 6px; color: var(--red); background: white; font-size: 17px; cursor: pointer; }
+    .quantity-control span { min-width: 13px; font-size: 12px; font-weight: 750; text-align: center; }
+    .cart-line-total { min-width: 52px; font-size: 12px; font-weight: 800; text-align: right; }
+    .cart-grand-total { display: flex; justify-content: space-between; padding: 14px 0; font-size: 14px; font-weight: 850; }
+    .checkout-fields { display: grid; gap: 11px; }
+    .checkout-fields label { display: grid; gap: 5px; font-size: 11px; font-weight: 750; }
+    .checkout-fields input, .checkout-fields textarea { width: 100%; min-height: 42px; padding: 10px 11px; border: 1px solid #e6dfd5; border-radius: 7px; outline: none; background: #fff; font: inherit; font-size: 12px; }
+    .checkout-fields textarea { min-height: 68px; resize: vertical; }
+    .checkout-fields input:focus, .checkout-fields textarea:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(217, 164, 65, .13); }
+    .fulfillment-options { display: flex; gap: 8px; margin: 0 0 13px; padding: 0; border: 0; }
+    .fulfillment-options label { position: relative; flex: 1; }
+    .fulfillment-options input { position: absolute; opacity: 0; }
+    .fulfillment-options span { min-height: 38px; display: grid; place-items: center; border: 1px solid var(--line); border-radius: 7px; color: #655d55; font-size: 11px; font-weight: 750; cursor: pointer; }
+    .fulfillment-options input:checked + span { border-color: var(--red); color: var(--red); background: #fff5f0; }
+    .fulfillment-options input:focus-visible + span { outline: 2px solid var(--gold); outline-offset: 2px; }
+    .delivery-note { margin: 11px 0 0; color: var(--muted); font-size: 10px; line-height: 1.5; }
+    .checkout-submit { width: 100%; min-height: 45px; margin-top: 14px; border: 0; border-radius: 8px; color: white; background: var(--red); font-size: 12px; font-weight: 800; cursor: pointer; }
+    .checkout-submit:hover { background: var(--red-dark); }
+    .workspace-tabs { max-width: 1180px; display: flex; gap: 5px; margin: 0 auto; padding: 18px 28px 0; }
+    .account-controls { display: flex; align-items: center; gap: 10px; margin-left: auto; }
+    .auth-status { overflow: hidden; max-width: 190px; color: var(--muted); font-size: 11px; text-overflow: ellipsis; white-space: nowrap; }
+    .account-button, .logout-button { min-height: 36px; padding: 0 12px; border: 1px solid #e8e1d7; border-radius: 7px; color: var(--red); background: white; font-size: 11px; font-weight: 800; cursor: pointer; }
+    .account-button { color: white; border-color: var(--red); background: var(--red); }
+    .backend-notice { max-width: 1124px; margin: 14px auto 0; padding: 11px 13px; border-left: 3px solid var(--gold); color: #6a5940; background: #fffaf0; font-size: 11px; line-height: 1.5; }
+    .auth-mode-switch { display: flex; gap: 5px; margin: 0 0 17px; padding-bottom: 12px; border-bottom: 1px solid var(--line); }
+    .auth-mode-switch button { min-height: 36px; flex: 1; border: 1px solid var(--line); border-radius: 6px; color: #655d55; background: white; font-size: 11px; font-weight: 750; cursor: pointer; }
+    .auth-mode-switch button[aria-pressed="true"] { border-color: var(--red); color: var(--red); background: #fff5f0; }
+    .auth-form { display: grid; gap: 11px; }
+    .auth-form label { display: grid; gap: 5px; font-size: 11px; font-weight: 750; }
+    .auth-form input { width: 100%; min-height: 42px; padding: 0 11px; border: 1px solid #e6dfd5; border-radius: 7px; outline: none; font: inherit; font-size: 12px; }
+    .auth-form input:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(217, 164, 65, .13); }
+    .auth-form button { min-height: 43px; border: 0; border-radius: 7px; color: white; background: var(--red); font-size: 11px; font-weight: 800; cursor: pointer; }
+    .auth-message { min-height: 18px; margin: 12px 0 0; color: var(--red-dark); font-size: 11px; line-height: 1.5; }
+    .auth-footnote { margin: 12px 0 0; color: var(--muted); font-size: 10px; line-height: 1.5; }
+    .workspace-tab { min-height: 40px; padding: 0 16px; border: 1px solid #e8e1d7; border-radius: 8px 8px 0 0; color: #655d55; background: #faf8f4; font-size: 12px; font-weight: 750; cursor: pointer; }
+    .workspace-tab[aria-selected="true"] { border-color: #e8e1d7; border-bottom-color: white; color: var(--red); background: white; }
+    .manager-shell { max-width: 1180px; min-height: 55vh; margin: 0 auto; padding: 25px 28px 65px; }
+    .manager-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 22px; }
+    .manager-header h2, .tracking-section h2 { margin: 0; font-family: Georgia, "Times New Roman", serif; font-size: 29px; font-weight: 500; }
+    .manager-header p { margin: 5px 0 0; color: var(--muted); font-size: 12px; }
+    .local-label { display: inline-flex; align-items: center; gap: 6px; margin-top: 10px; padding: 5px 8px; border: 1px solid #f0dfbd; border-radius: 5px; color: #765a24; background: #fff9eb; font-size: 10px; font-weight: 750; }
+    .refresh-button { min-height: 38px; padding: 0 12px; border: 1px solid #e8e1d7; border-radius: 7px; color: #5e564d; background: white; font-size: 11px; font-weight: 750; cursor: pointer; }
+    .manager-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-bottom: 22px; }
+    .manager-stat { padding: 13px 15px; border: 1px solid var(--line); border-radius: 8px; background: #fff; }
+    .manager-stat span { display: block; color: var(--muted); font-size: 10px; font-weight: 650; }
+    .manager-stat strong { display: block; margin-top: 5px; color: var(--ink); font-size: 21px; }
+    .manager-orders { display: grid; gap: 10px; }
+    .manager-order { padding: 16px; border: 1px solid var(--line); border-radius: 8px; background: white; }
+    .manager-order-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-bottom: 11px; border-bottom: 1px solid var(--line); }
+    .manager-order-code { color: var(--red-dark); font-size: 13px; font-weight: 850; }
+    .manager-order-time { display: block; margin-top: 4px; color: var(--muted); font-size: 10px; }
+    .manager-order-controls { display: flex; align-items: center; gap: 8px; }
+    .manager-order-controls label { color: var(--muted); font-size: 10px; }
+    .manager-order-controls select { min-height: 34px; max-width: 180px; padding: 0 8px; border: 1px solid #e5ddd2; border-radius: 6px; color: var(--ink); background: white; font: inherit; font-size: 11px; }
+    .manager-order-body { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(180px, .85fr); gap: 18px; padding-top: 12px; }
+    .manager-customer { font-size: 12px; font-weight: 800; }
+    .manager-contact { display: inline-block; margin-top: 4px; color: var(--red-dark); font-size: 11px; }
+    .manager-order-items { margin: 10px 0 0; padding-left: 17px; color: #625a51; font-size: 11px; line-height: 1.7; }
+    .manager-order-meta { color: #625a51; font-size: 11px; line-height: 1.65; overflow-wrap: anywhere; }
+    .manager-order-meta strong { color: var(--ink); }
+    .manager-total { margin-top: 8px; color: var(--ink); font-size: 13px; font-weight: 850; }
+    .manager-empty { padding: 42px 18px; border: 1px dashed #ddd4c8; border-radius: 8px; color: var(--muted); text-align: center; font-size: 12px; }
+    .tracking-section { margin-top: 42px; padding: 24px 0 4px; border-top: 1px solid var(--line); }
+    .tracking-section > p { margin: 5px 0 16px; color: var(--muted); font-size: 12px; }
+    .tracking-form { display: flex; max-width: 520px; gap: 8px; }
+    .tracking-form input { min-width: 0; min-height: 43px; flex: 1; padding: 0 12px; border: 1px solid #e6dfd5; border-radius: 7px; outline: none; font: inherit; font-size: 12px; text-transform: uppercase; }
+    .tracking-form input:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(217, 164, 65, .13); }
+    .tracking-form button { min-height: 43px; padding: 0 15px; border: 0; border-radius: 7px; color: white; background: var(--red); font-size: 11px; font-weight: 800; cursor: pointer; }
+    .tracking-result { max-width: 690px; margin-top: 17px; }
+    .tracking-message { margin: 0; color: var(--muted); font-size: 12px; }
+    .tracking-card { padding: 16px; border: 1px solid var(--line); border-radius: 8px; background: white; }
+    .tracking-card-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+    .tracking-card h3 { margin: 0; color: var(--red-dark); font-size: 13px; }
+    .tracking-status { padding: 5px 8px; border-radius: 5px; color: #6b5429; background: #fff4d8; font-size: 10px; font-weight: 800; }
+    .tracking-items { margin: 12px 0 0; padding-left: 17px; color: #625a51; font-size: 11px; line-height: 1.7; }
+    .tracking-total { margin-top: 10px; font-size: 12px; font-weight: 850; }
+    .tracking-timeline { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 4px; margin-top: 17px; }
+    .tracking-step { padding-top: 9px; border-top: 3px solid #e8e2d9; color: #938a80; font-size: 9px; line-height: 1.35; }
+    .tracking-step.done { border-color: var(--green); color: #3d704d; font-weight: 750; }
+    .tracking-step.current { border-color: var(--gold); color: var(--ink); font-weight: 850; }
+    .demo-notice { margin: 16px 0 0; padding: 11px 12px; border-left: 3px solid var(--gold); color: #6a5940; background: #fffaf0; font-size: 10px; line-height: 1.5; }
     @keyframes enter { from { opacity: 0; transform: translateY(9px); } to { opacity: 1; transform: translateY(0); } }
 
     @media (max-width: 700px) {
@@ -203,6 +303,26 @@
       .item-description { font-size: 10px; }
       .order-banner { align-items: flex-start; flex-direction: column; padding: 19px; }
       .call-button { width: 100%; }
+      .cart-bar { bottom: 12px; }
+      .cart-dialog-inner { padding: 18px; }
+      .workspace-tabs { padding: 15px 17px 0; }
+      .account-controls { gap: 6px; }
+      .auth-status { max-width: 95px; font-size: 9px; }
+      .account-button, .logout-button { padding: 0 9px; font-size: 10px; }
+      .backend-notice { margin-right: 17px; margin-left: 17px; }
+      .manager-shell { padding: 21px 17px 45px; }
+      .manager-header h2, .tracking-section h2 { font-size: 25px; }
+      .manager-stats { gap: 6px; }
+      .manager-stat { padding: 10px; }
+      .manager-stat span { font-size: 9px; }
+      .manager-stat strong { font-size: 18px; }
+      .manager-order { padding: 12px; }
+      .manager-order-header { align-items: flex-start; flex-direction: column; }
+      .manager-order-controls { width: 100%; justify-content: space-between; }
+      .manager-order-body { grid-template-columns: 1fr; gap: 12px; }
+      .tracking-form { align-items: stretch; flex-direction: column; }
+      .tracking-form button { width: 100%; }
+      .tracking-timeline { grid-template-columns: repeat(3, minmax(0, 1fr)); row-gap: 9px; }
       .section-icon { width: 35px; height: 35px; }
       .section-title { font-size: 21px; }
     }
@@ -236,7 +356,18 @@
       </div>
     </section>
 
-    <div class="menu-shell">
+    <nav class="workspace-tabs" role="tablist" aria-label="Order workspace">
+      <button class="workspace-tab" id="customer-tab" type="button" role="tab" aria-selected="true" aria-controls="customer-view" data-view="customer">Customer</button>
+      <button class="workspace-tab" id="manager-tab" type="button" role="tab" aria-selected="false" aria-controls="manager-view" data-view="manager">Restaurant manager</button>
+      <div class="account-controls">
+        <span class="auth-status" id="auth-status">Not signed in</span>
+        <button class="account-button" id="open-auth" type="button">Sign in</button>
+        <button class="logout-button hidden" id="sign-out" type="button">Sign out</button>
+      </div>
+    </nav>
+    <p class="backend-notice" id="backend-notice">Shared login is not configured yet. Add your Supabase project URL and publishable key to <strong>.env.local</strong>, then follow <strong>SUPABASE-SETUP.md</strong>.</p>
+
+    <div class="menu-shell" id="customer-view" role="tabpanel" aria-labelledby="customer-tab">
       <div class="menu-tools">
         <label class="search-wrap">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8" stroke="currentColor" stroke-width="1.8"/><path d="m16 16 4.2 4.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
@@ -459,13 +590,101 @@
           Call to order · 98701 95351
         </a>
       </aside>
+
+      <section class="tracking-section" id="tracking-section" aria-labelledby="tracking-title">
+        <h2 id="tracking-title">Track your order</h2>
+        <p>Enter the order reference from your confirmation message.</p>
+        <form class="tracking-form" id="tracking-form">
+          <label class="hidden" for="tracking-code">Order reference</label>
+          <input id="tracking-code" name="orderCode" autocomplete="off" placeholder="BTW-ORDER-CODE" required aria-label="Order reference">
+          <button type="submit">Track order</button>
+        </form>
+        <div class="tracking-result" id="tracking-result" aria-live="polite"></div>
+        <p class="demo-notice">Sign in with the customer phone number used for your order. Status updates are shared with the restaurant in real time.</p>
+      </section>
     </div>
+
+    <section class="manager-view hidden" id="manager-view" role="tabpanel" aria-labelledby="manager-tab">
+      <div class="manager-shell">
+        <header class="manager-header">
+          <div>
+            <h2>Restaurant manager</h2>
+            <p>Review incoming orders and keep each customer’s status up to date.</p>
+            <span class="local-label">MANAGER ACCOUNT REQUIRED</span>
+          </div>
+          <button class="refresh-button" id="refresh-manager" type="button">Refresh orders</button>
+        </header>
+        <div class="manager-stats" id="manager-stats"></div>
+        <div class="manager-orders" id="manager-orders"></div>
+        <div class="manager-empty hidden" id="manager-empty">No customer orders yet.</div>
+      </div>
+    </section>
   </main>
 
   <footer><strong>BTW · SWEETS · SNACKS</strong><br>Faridabad, Haryana · Menu prices may change. Please confirm when ordering.</footer>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <button class="cart-bar" id="cart-bar" type="button" aria-label="Open your order">
+    <span class="cart-summary"><span id="cart-count">0 items</span><span class="cart-bar-hint">View your order</span></span>
+    <span class="cart-open">₹<span id="cart-bar-total">0</span> &nbsp;View cart</span>
+  </button>
+  <dialog class="cart-dialog" id="cart-dialog" aria-labelledby="cart-title">
+    <div class="cart-dialog-inner">
+      <div class="cart-dialog-header">
+        <div><h2 id="cart-title">Your order</h2><p class="cart-dialog-intro">Review your items and delivery details.</p></div>
+        <button class="dialog-close" id="close-cart" type="button" aria-label="Close cart">×</button>
+      </div>
+      <div class="cart-items" id="cart-items"></div>
+      <div class="cart-grand-total"><span>Items total</span><span>₹<span id="cart-dialog-total">0</span></span></div>
+      <form id="checkout-form">
+        <fieldset class="fulfillment-options" aria-label="Order type">
+          <label><input type="radio" name="fulfillment" value="delivery" checked><span>Home delivery</span></label>
+          <label><input type="radio" name="fulfillment" value="pickup"><span>Store pickup</span></label>
+        </fieldset>
+        <div class="checkout-fields">
+          <label>Your name<input name="customerName" autocomplete="name" required maxlength="80" placeholder="Name for the order"></label>
+          <label>Mobile number<input name="customerPhone" type="tel" autocomplete="tel" inputmode="numeric" pattern="[0-9]{10}" required placeholder="10-digit mobile number"></label>
+          <label id="address-field">Delivery address<textarea name="address" autocomplete="street-address" required maxlength="300" placeholder="House / flat, street, area, Faridabad"></textarea></label>
+          <label>Order note <span>(optional)</span><textarea name="orderNote" maxlength="250" placeholder="Any instructions for the kitchen"></textarea></label>
+        </div>
+        <p class="delivery-note">Delivery availability and charges will be confirmed by the store. Prices and order total are subject to confirmation.</p>
+        <button class="checkout-submit" type="submit">Place order and open WhatsApp</button>
+      </form>
+    </div>
+  </dialog>
 
-  <script>
+  <dialog class="cart-dialog" id="auth-dialog" aria-labelledby="auth-title">
+    <div class="cart-dialog-inner">
+      <div class="cart-dialog-header">
+        <div><h2 id="auth-title">Sign in</h2><p class="cart-dialog-intro">Use your customer account or restaurant manager account.</p></div>
+        <button class="dialog-close" id="close-auth" type="button" aria-label="Close sign-in">×</button>
+      </div>
+      <div class="auth-mode-switch" role="group" aria-label="Account type">
+        <button type="button" data-auth-mode="customer" aria-pressed="true">Customer</button>
+        <button type="button" data-auth-mode="manager" aria-pressed="false">Restaurant manager</button>
+      </div>
+      <div id="customer-auth">
+        <form class="auth-form" id="customer-phone-form">
+          <label>Mobile number<input name="phone" type="tel" autocomplete="tel" inputmode="tel" required placeholder="10-digit Indian mobile"></label>
+          <button type="submit">Send sign-in code</button>
+        </form>
+        <form class="auth-form hidden" id="customer-otp-form">
+          <label>SMS code<input name="token" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" required placeholder="6-digit code"></label>
+          <button type="submit">Verify and sign in</button>
+        </form>
+        <p class="auth-footnote">A one-time code will be sent by SMS. Your phone must be able to receive messages.</p>
+      </div>
+      <form class="auth-form hidden" id="manager-auth">
+        <label>Manager email<input name="email" type="email" autocomplete="username" required placeholder="manager@example.com"></label>
+        <label>Password<input name="password" type="password" autocomplete="current-password" required></label>
+        <button type="submit">Sign in as manager</button>
+      </form>
+      <p class="auth-message" id="auth-message" role="status" aria-live="polite"></p>
+    </div>
+  </dialog>
+
+  <script type="module">
+    import { createClient } from "@supabase/supabase-js";
+
     const searchInput = document.querySelector("#menu-search");
     const clearButton = document.querySelector("#clear-search");
     const sections = [...document.querySelectorAll(".category-section")];
@@ -473,7 +692,367 @@
     const cards = [...document.querySelectorAll(".item-card")];
     const emptyState = document.querySelector("#empty-state");
     const toast = document.querySelector("#toast");
+    const cartBar = document.querySelector("#cart-bar");
+    const cartDialog = document.querySelector("#cart-dialog");
+    const cartItems = document.querySelector("#cart-items");
+    const cart = new Map();
+    const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+    const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+    const backendReady = Boolean(supabaseUrl && supabaseAnonKey && !supabaseUrl.includes("your-project"));
+    const supabase = backendReady ? createClient(supabaseUrl, supabaseAnonKey) : null;
+    const orderStatuses = [
+      { value: "received", label: "Order received" },
+      { value: "confirmed", label: "Confirmed" },
+      { value: "preparing", label: "Preparing" },
+      { value: "out-for-delivery", label: "Out for delivery" },
+      { value: "delivered", label: "Delivered" },
+      { value: "cancelled", label: "Cancelled" }
+    ];
     let toastTimer;
+    let currentSession = null;
+    let currentProfile = null;
+    let pendingPhone = "";
+    let orderChannel = null;
+
+    function makeOrderCode() {
+      const date = new Date().toISOString().slice(2, 10).replaceAll("-", "");
+      const suffix = crypto.randomUUID().slice(0, 8).toUpperCase();
+      return `BTW-${date}-${suffix}`;
+    }
+
+    function mapOrder(record) {
+      return {
+        databaseId: record.id,
+        id: record.tracking_code,
+        userId: record.user_id,
+        createdAt: record.created_at,
+        updatedAt: record.updated_at,
+        status: record.status,
+        customerName: record.customer_name,
+        customerPhone: record.customer_phone,
+        fulfillment: record.fulfillment,
+        address: record.delivery_address,
+        orderNote: record.order_note,
+        items: record.items,
+        total: record.items_total
+      };
+    }
+
+    function normalizePhone(phone) {
+      const trimmed = phone.trim();
+      const digits = trimmed.replace(/\D/g, "");
+      if (digits.length === 10) return `+91${digits}`;
+      if (digits.length === 12 && digits.startsWith("91")) return `+${digits}`;
+      if (trimmed.startsWith("+") && digits.length >= 10 && digits.length <= 15) return `+${digits}`;
+      throw new Error("Enter a valid phone number, including country code if it is not an Indian number.");
+    }
+
+    const authDialog = document.querySelector("#auth-dialog");
+    const authMessage = document.querySelector("#auth-message");
+    const authStatus = document.querySelector("#auth-status");
+
+    function setAuthMode(mode) {
+      document.querySelectorAll("[data-auth-mode]").forEach(button => {
+        button.setAttribute("aria-pressed", button.dataset.authMode === mode);
+      });
+      document.querySelector("#customer-auth").classList.toggle("hidden", mode !== "customer");
+      document.querySelector("#manager-auth").classList.toggle("hidden", mode !== "manager");
+      document.querySelector("#customer-phone-form").classList.toggle("hidden", Boolean(pendingPhone));
+      document.querySelector("#customer-otp-form").classList.toggle("hidden", !pendingPhone);
+      document.querySelector("#auth-title").textContent = mode === "manager" ? "Manager sign in" : "Customer sign in";
+      authMessage.textContent = "";
+    }
+
+    function openAuthDialog(mode = "customer", message = "") {
+      setAuthMode(mode);
+      authMessage.textContent = message || (backendReady ? "" : "Connect Supabase first. See SUPABASE-SETUP.md for setup steps.");
+      if (!authDialog.open) authDialog.showModal();
+    }
+
+    function subscribeToOrderUpdates() {
+      if (!supabase || !currentSession || !currentProfile) return;
+      if (orderChannel) supabase.removeChannel(orderChannel);
+      const isManager = currentProfile.role === "manager";
+      const filter = isManager ? {} : { filter: `user_id=eq.${currentSession.user.id}` };
+      orderChannel = supabase.channel(`orders:${currentSession.user.id}`)
+        .on("postgres_changes", { event: "*", schema: "public", table: "orders", ...filter }, payload => {
+          if (isManager && !document.querySelector("#manager-view").classList.contains("hidden")) void renderManager();
+          const code = document.querySelector("#tracking-code").value.trim().toUpperCase();
+          if (code && payload.new?.tracking_code === code) void renderTracking(code);
+        })
+        .subscribe();
+    }
+
+    async function refreshSession(session) {
+      currentSession = session;
+      currentProfile = null;
+      if (session && supabase) {
+        const { data, error } = await supabase.from("profiles").select("role").eq("id", session.user.id).maybeSingle();
+        if (error) authMessage.textContent = `Could not load account: ${error.message}`;
+        currentProfile = data;
+      }
+      const roleLabel = currentProfile?.role === "manager" ? "Manager" : "Customer";
+      const identity = session?.user.phone || session?.user.email || "Account";
+      authStatus.textContent = session ? `${roleLabel} · ${identity}` : "Not signed in";
+      document.querySelector("#open-auth").classList.toggle("hidden", Boolean(session));
+      document.querySelector("#sign-out").classList.toggle("hidden", !session);
+      if (session?.user.phone) {
+        const digits = session.user.phone.replace(/\D/g, "");
+        document.querySelector("input[name='customerPhone']").value = digits.length === 12 && digits.startsWith("91") ? digits.slice(2) : digits;
+      }
+      subscribeToOrderUpdates();
+      void renderManager();
+    }
+
+    function statusLabel(status) {
+      return orderStatuses.find(option => option.value === status)?.label ?? "Order received";
+    }
+
+    async function renderManager() {
+      const stats = document.querySelector("#manager-stats");
+      const list = document.querySelector("#manager-orders");
+      const empty = document.querySelector("#manager-empty");
+      stats.replaceChildren();
+      list.replaceChildren();
+      if (!backendReady) {
+        empty.textContent = "Add Supabase settings to enable the shared manager order queue.";
+        empty.classList.remove("hidden");
+        return;
+      }
+      if (currentProfile?.role !== "manager") {
+        empty.textContent = "Sign in with the restaurant manager account to view orders.";
+        empty.classList.remove("hidden");
+        return;
+      }
+      const { data, error } = await supabase.from("orders").select("*").order("created_at", { ascending: false });
+      if (error) {
+        empty.textContent = `Could not load orders: ${error.message}`;
+        empty.classList.remove("hidden");
+        return;
+      }
+      const orders = (data ?? []).map(mapOrder);
+      const activeCount = orders.filter(order => !["delivered", "cancelled"].includes(order.status)).length;
+      const deliveryCount = orders.filter(order => order.status === "out-for-delivery").length;
+      const completedCount = orders.filter(order => order.status === "delivered" && new Date(order.updatedAt ?? order.createdAt).toDateString() === new Date().toDateString()).length;
+      for (const [label, value] of [["Active orders", activeCount], ["Out for delivery", deliveryCount], ["Delivered today", completedCount]]) {
+        const stat = document.createElement("div");
+        stat.className = "manager-stat";
+        const title = document.createElement("span");
+        title.textContent = label;
+        const count = document.createElement("strong");
+        count.textContent = value;
+        stat.append(title, count);
+        stats.append(stat);
+      }
+
+      empty.classList.toggle("hidden", orders.length > 0);
+      if (orders.length === 0) empty.textContent = "No customer orders yet.";
+      for (const order of orders) {
+        const card = document.createElement("article");
+        card.className = "manager-order";
+        const header = document.createElement("div");
+        header.className = "manager-order-header";
+        const identity = document.createElement("div");
+        const code = document.createElement("div");
+        code.className = "manager-order-code";
+        code.textContent = order.id;
+        const time = document.createElement("time");
+        time.className = "manager-order-time";
+        time.dateTime = order.createdAt;
+        time.textContent = new Date(order.createdAt).toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short" });
+        identity.append(code, time);
+
+        const controls = document.createElement("div");
+        controls.className = "manager-order-controls";
+        const statusCaption = document.createElement("label");
+        statusCaption.textContent = "Update status";
+        const select = document.createElement("select");
+        select.setAttribute("aria-label", `Update status for ${order.id}`);
+        for (const status of orderStatuses) {
+          const option = document.createElement("option");
+          option.value = status.value;
+          option.textContent = status.label;
+          option.selected = status.value === order.status;
+          select.append(option);
+        }
+        select.addEventListener("change", async () => {
+          select.disabled = true;
+          const { error: updateError } = await supabase.from("orders").update({ status: select.value }).eq("id", order.databaseId);
+          select.disabled = false;
+          if (updateError) {
+            toast.textContent = `Could not update order: ${updateError.message}`;
+            toast.classList.add("show");
+            void renderManager();
+            return;
+          }
+          void renderManager();
+          const code = document.querySelector("#tracking-code").value.trim();
+          if (code.toUpperCase() === order.id) void renderTracking(code);
+        });
+        controls.append(statusCaption, select);
+        header.append(identity, controls);
+
+        const body = document.createElement("div");
+        body.className = "manager-order-body";
+        const customer = document.createElement("div");
+        const customerName = document.createElement("div");
+        customerName.className = "manager-customer";
+        customerName.textContent = order.customerName;
+        const phone = document.createElement("a");
+        phone.className = "manager-contact";
+        phone.href = `tel:${order.customerPhone}`;
+        phone.textContent = order.customerPhone;
+        const items = document.createElement("ul");
+        items.className = "manager-order-items";
+        for (const item of order.items) {
+          const line = document.createElement("li");
+          line.textContent = `${item.quantity} × ${item.name} — ₹${formatPrice(item.price * item.quantity)}`;
+          items.append(line);
+        }
+        customer.append(customerName, phone, items);
+
+        const meta = document.createElement("div");
+        meta.className = "manager-order-meta";
+        const type = document.createElement("div");
+        const fulfillment = document.createElement("strong");
+        fulfillment.textContent = order.fulfillment === "delivery" ? "Home delivery" : "Store pickup";
+        type.append(fulfillment);
+        meta.append(type);
+        if (order.fulfillment === "delivery") {
+          const address = document.createElement("div");
+          address.textContent = order.address;
+          meta.append(address);
+        }
+        if (order.orderNote) {
+          const note = document.createElement("div");
+          note.textContent = `Note: ${order.orderNote}`;
+          meta.append(note);
+        }
+        const total = document.createElement("div");
+        total.className = "manager-total";
+        total.textContent = `Items total: ₹${formatPrice(order.total)}`;
+        meta.append(total);
+        body.append(customer, meta);
+        card.append(header, body);
+        list.append(card);
+      }
+    }
+
+    async function renderTracking(orderCode) {
+      const result = document.querySelector("#tracking-result");
+      result.replaceChildren();
+      if (!currentSession) {
+        const message = document.createElement("p");
+        message.className = "tracking-message";
+        message.textContent = "Sign in with the customer phone number used for this order, then enter its reference.";
+        result.append(message);
+        return;
+      }
+      const { data, error } = await supabase.from("orders").select("*").eq("tracking_code", orderCode.trim().toUpperCase()).maybeSingle();
+      if (error || !data) {
+        const message = document.createElement("p");
+        message.className = "tracking-message";
+        message.textContent = error ? `Could not load order: ${error.message}` : "We couldn’t find that order for this account. Check the reference or contact BTW at 98701 95351.";
+        result.append(message);
+        return;
+      }
+      const order = mapOrder(data);
+
+      const card = document.createElement("article");
+      card.className = "tracking-card";
+      const header = document.createElement("div");
+      header.className = "tracking-card-header";
+      const title = document.createElement("h3");
+      title.textContent = order.id;
+      const status = document.createElement("span");
+      status.className = "tracking-status";
+      status.textContent = statusLabel(order.status);
+      header.append(title, status);
+      const items = document.createElement("ul");
+      items.className = "tracking-items";
+      for (const item of order.items) {
+        const line = document.createElement("li");
+        line.textContent = `${item.quantity} × ${item.name}`;
+        items.append(line);
+      }
+      const total = document.createElement("div");
+      total.className = "tracking-total";
+      total.textContent = `Items total: ₹${formatPrice(order.total)}`;
+      card.append(header, items, total);
+      if (order.status === "cancelled") {
+        const cancelled = document.createElement("p");
+        cancelled.className = "tracking-message";
+        cancelled.textContent = "Please contact BTW Faridabad for help with this order.";
+        card.append(cancelled);
+      } else {
+        const timeline = document.createElement("div");
+        timeline.className = "tracking-timeline";
+        const progressStatuses = ["received", "confirmed", "preparing", "out-for-delivery", "delivered"];
+        const currentIndex = progressStatuses.indexOf(order.status);
+        for (const [index, value] of progressStatuses.entries()) {
+          const step = document.createElement("div");
+          step.className = "tracking-step";
+          if (index < currentIndex) step.classList.add("done");
+          if (index === currentIndex) step.classList.add("current");
+          step.textContent = statusLabel(value);
+          timeline.append(step);
+        }
+        card.append(timeline);
+      }
+      result.append(card);
+    }
+
+    function formatPrice(amount) {
+      return new Intl.NumberFormat("en-IN", { maximumFractionDigits: 0 }).format(amount);
+    }
+
+    function renderCart() {
+      const entries = [...cart.entries()];
+      const itemCount = entries.reduce((sum, [, item]) => sum + item.quantity, 0);
+      const total = entries.reduce((sum, [, item]) => sum + item.price * item.quantity, 0);
+      document.querySelector("#cart-count").textContent = `${itemCount} ${itemCount === 1 ? "item" : "items"}`;
+      document.querySelector("#cart-bar-total").textContent = formatPrice(total);
+      document.querySelector("#cart-dialog-total").textContent = formatPrice(total);
+      cartBar.classList.toggle("show", itemCount > 0);
+      cartItems.replaceChildren();
+
+      for (const [name, item] of entries) {
+        const row = document.createElement("div");
+        row.className = "cart-row";
+        const details = document.createElement("div");
+        const itemName = document.createElement("div");
+        itemName.className = "cart-item-name";
+        itemName.textContent = name;
+        const unitPrice = document.createElement("div");
+        unitPrice.className = "cart-item-price";
+        unitPrice.textContent = `₹${formatPrice(item.price)} each`;
+        details.append(itemName, unitPrice);
+
+        const quantity = document.createElement("div");
+        quantity.className = "quantity-control";
+        const decrease = document.createElement("button");
+        decrease.type = "button";
+        decrease.dataset.cartAction = "decrease";
+        decrease.dataset.item = name;
+        decrease.setAttribute("aria-label", `Remove one ${name}`);
+        decrease.textContent = "−";
+        const quantityValue = document.createElement("span");
+        quantityValue.textContent = item.quantity;
+        const increase = document.createElement("button");
+        increase.type = "button";
+        increase.dataset.cartAction = "increase";
+        increase.dataset.item = name;
+        increase.setAttribute("aria-label", `Add one ${name}`);
+        increase.textContent = "+";
+        quantity.append(decrease, quantityValue, increase);
+
+        const lineTotal = document.createElement("span");
+        lineTotal.className = "cart-line-total";
+        lineTotal.textContent = `₹${formatPrice(item.price * item.quantity)}`;
+        row.append(details, quantity, lineTotal);
+        cartItems.append(row);
+      }
+    }
 
     function filterMenu() {
       const query = searchInput.value.trim().toLocaleLowerCase();
@@ -502,13 +1081,247 @@
     });
 
     document.querySelectorAll(".add-link").forEach(button => {
+      button.textContent = "ADD";
+      const card = button.closest(".item-card");
+      const priceText = card.querySelector(".price")?.textContent ?? "";
+      const price = Number(priceText.match(/[\d,]+/)?.[0].replaceAll(",", ""));
+      button.disabled = !Number.isFinite(price);
+      if (button.disabled) button.textContent = "CHECK PRICE";
+      button.setAttribute("aria-label", `Add ${button.dataset.item} to order`);
       button.addEventListener("click", () => {
-        toast.textContent = `To order ${button.dataset.item}, call 98701 95351.`;
+        const item = cart.get(button.dataset.item);
+        cart.set(button.dataset.item, { price, quantity: (item?.quantity ?? 0) + 1 });
+        renderCart();
+        toast.textContent = `${button.dataset.item} added to your order.`;
         toast.classList.add("show");
         window.clearTimeout(toastTimer);
-        toastTimer = window.setTimeout(() => toast.classList.remove("show"), 3000);
+        toastTimer = window.setTimeout(() => toast.classList.remove("show"), 1800);
       });
     });
+
+    cartBar.addEventListener("click", () => cartDialog.showModal());
+    document.querySelector("#close-cart").addEventListener("click", () => cartDialog.close());
+    cartDialog.addEventListener("click", event => {
+      if (event.target === cartDialog) cartDialog.close();
+    });
+    cartItems.addEventListener("click", event => {
+      const button = event.target.closest("button[data-cart-action]");
+      if (!button) return;
+      const item = cart.get(button.dataset.item);
+      if (!item) return;
+      if (button.dataset.cartAction === "increase") item.quantity++;
+      else if (--item.quantity <= 0) cart.delete(button.dataset.item);
+      renderCart();
+    });
+
+    const addressField = document.querySelector("#address-field");
+    document.querySelectorAll("input[name='fulfillment']").forEach(input => {
+      input.addEventListener("change", () => {
+        const delivery = input.value === "delivery" && input.checked;
+        addressField.classList.toggle("hidden", !delivery);
+        addressField.querySelector("textarea").required = delivery;
+      });
+    });
+
+    document.querySelector("#open-auth").addEventListener("click", () => openAuthDialog());
+    document.querySelector("#close-auth").addEventListener("click", () => authDialog.close());
+    authDialog.addEventListener("click", event => {
+      if (event.target === authDialog) authDialog.close();
+    });
+    document.querySelectorAll("[data-auth-mode]").forEach(button => {
+      button.addEventListener("click", () => setAuthMode(button.dataset.authMode));
+    });
+
+    document.querySelector("#customer-phone-form").addEventListener("submit", async event => {
+      event.preventDefault();
+      if (!supabase) {
+        authMessage.textContent = "Connect Supabase first. See SUPABASE-SETUP.md for setup steps.";
+        return;
+      }
+      try {
+        pendingPhone = normalizePhone(new FormData(event.currentTarget).get("phone"));
+        const { error } = await supabase.auth.signInWithOtp({ phone: pendingPhone });
+        if (error) throw error;
+        setAuthMode("customer");
+        authMessage.textContent = `A sign-in code was sent to ${pendingPhone}.`;
+      } catch (error) {
+        authMessage.textContent = error.message;
+      }
+    });
+
+    document.querySelector("#customer-otp-form").addEventListener("submit", async event => {
+      event.preventDefault();
+      if (!supabase || !pendingPhone) return;
+      const token = new FormData(event.currentTarget).get("token");
+      const { data, error } = await supabase.auth.verifyOtp({ phone: pendingPhone, token, type: "sms" });
+      if (error) {
+        authMessage.textContent = error.message;
+        return;
+      }
+      pendingPhone = "";
+      await refreshSession(data.session);
+      authDialog.close();
+    });
+
+    document.querySelector("#manager-auth").addEventListener("submit", async event => {
+      event.preventDefault();
+      if (!supabase) {
+        authMessage.textContent = "Connect Supabase first. See SUPABASE-SETUP.md for setup steps.";
+        return;
+      }
+      const formData = new FormData(event.currentTarget);
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: formData.get("email"),
+        password: formData.get("password")
+      });
+      if (error) {
+        authMessage.textContent = error.message;
+        return;
+      }
+      const { data: profile, error: profileError } = await supabase.from("profiles").select("role").eq("id", data.user.id).maybeSingle();
+      if (profileError || profile?.role !== "manager") {
+        await supabase.auth.signOut();
+        await refreshSession(null);
+        authMessage.textContent = "This account does not have restaurant manager access.";
+        return;
+      }
+      await refreshSession(data.session);
+      authDialog.close();
+      document.querySelector("#manager-tab").click();
+    });
+
+    document.querySelector("#sign-out").addEventListener("click", async () => {
+      if (supabase) await supabase.auth.signOut();
+      pendingPhone = "";
+      await refreshSession(null);
+      authDialog.close();
+      document.querySelector("#customer-tab").click();
+    });
+
+    document.querySelector("#checkout-form").addEventListener("submit", async event => {
+      event.preventDefault();
+      if (cart.size === 0) return;
+      if (!backendReady) {
+        openAuthDialog("customer", "Shared ordering is not configured yet. Follow SUPABASE-SETUP.md first.");
+        return;
+      }
+      if (!currentSession || currentProfile?.role !== "customer") {
+        openAuthDialog("customer", "Sign in with your customer phone number before placing an order.");
+        return;
+      }
+      const formData = new FormData(event.currentTarget);
+      const fulfillment = formData.get("fulfillment");
+      let customerPhone;
+      try {
+        customerPhone = normalizePhone(formData.get("customerPhone"));
+        if (customerPhone !== normalizePhone(currentSession.user.phone ?? "")) {
+          openAuthDialog("customer", "Use the same mobile number as your signed-in customer account.");
+          return;
+        }
+      } catch (error) {
+        openAuthDialog("customer", error.message);
+        return;
+      }
+      const trackingCode = makeOrderCode();
+      const whatsappWindow = window.open("about:blank", "_blank");
+      const { data, error } = await supabase.from("orders").insert({
+        tracking_code: trackingCode,
+        user_id: currentSession.user.id,
+        customer_name: formData.get("customerName"),
+        customer_phone: customerPhone,
+        fulfillment,
+        delivery_address: fulfillment === "delivery" ? formData.get("address") : "",
+        order_note: formData.get("orderNote"),
+        items: [...cart.entries()].map(([name, item]) => ({ name, price: item.price, quantity: item.quantity })),
+        items_total: [...cart.values()].reduce((sum, item) => sum + item.price * item.quantity, 0),
+        status: "received"
+      }).select("*").single();
+      if (error) {
+        whatsappWindow?.close();
+        toast.textContent = `Could not place order: ${error.message}`;
+        toast.classList.add("show");
+        return;
+      }
+      const order = mapOrder(data);
+      const lines = order.items.map(item => `- ${item.name} x${item.quantity} = ₹${formatPrice(item.price * item.quantity)}`);
+      const message = [
+        "Hello BTW Faridabad, I would like to place an order:",
+        `Order reference: ${order.id}`,
+        "",
+        ...lines,
+        `Customer subtotal: ₹${formatPrice(order.total)} (please confirm final total)`,
+        `Order type: ${fulfillment === "delivery" ? "Home delivery" : "Store pickup"}`,
+        `Name: ${order.customerName}`,
+        `Mobile: ${order.customerPhone}`,
+        ...(order.address ? [`Address: ${order.address}`] : []),
+        ...(order.orderNote ? [`Note: ${order.orderNote}`] : [])
+      ].join("\n");
+      const whatsappUrl = `https://wa.me/919870195351?text=${encodeURIComponent(message)}`;
+      if (whatsappWindow) {
+        whatsappWindow.opener = null;
+        whatsappWindow.location.href = whatsappUrl;
+      }
+      cart.clear();
+      renderCart();
+      cartDialog.close();
+      document.querySelector("#tracking-code").value = order.id;
+      await renderTracking(order.id);
+      if (!whatsappWindow) {
+        const whatsappLink = document.createElement("a");
+        whatsappLink.className = "call-button";
+        whatsappLink.href = whatsappUrl;
+        whatsappLink.target = "_blank";
+        whatsappLink.rel = "noopener noreferrer";
+        whatsappLink.textContent = "Open WhatsApp order";
+        document.querySelector("#tracking-result").append(whatsappLink);
+      }
+      document.querySelector("#tracking-section").scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+
+    const hero = document.querySelector(".hero");
+    const customerView = document.querySelector("#customer-view");
+    const managerView = document.querySelector("#manager-view");
+    document.querySelectorAll(".workspace-tab").forEach(tab => {
+      tab.addEventListener("click", () => {
+        const showCustomer = tab.dataset.view === "customer";
+        if (!showCustomer && currentProfile?.role !== "manager") {
+          openAuthDialog("manager", "Sign in with the restaurant manager account to view orders.");
+          return;
+        }
+        document.querySelectorAll(".workspace-tab").forEach(viewTab => {
+          const selected = viewTab === tab;
+          viewTab.setAttribute("aria-selected", selected);
+          viewTab.tabIndex = selected ? 0 : -1;
+        });
+        hero.classList.toggle("hidden", !showCustomer);
+        customerView.classList.toggle("hidden", !showCustomer);
+        managerView.classList.toggle("hidden", showCustomer);
+        if (!showCustomer) void renderManager();
+      });
+    });
+
+    document.querySelector("#refresh-manager").addEventListener("click", () => void renderManager());
+    document.querySelector("#tracking-form").addEventListener("submit", async event => {
+      event.preventDefault();
+      await renderTracking(document.querySelector("#tracking-code").value);
+    });
+    document.querySelector("#tracking-code").addEventListener("input", event => {
+      event.currentTarget.value = event.currentTarget.value.toUpperCase();
+    });
+    async function initializeAuth() {
+      document.querySelector("#backend-notice").classList.toggle("hidden", backendReady);
+      if (supabase) {
+        supabase.auth.onAuthStateChange((_event, session) => {
+          queueMicrotask(() => void refreshSession(session));
+        });
+        const { data: { session }, error } = await supabase.auth.getSession();
+        if (error) authMessage.textContent = `Could not restore sign-in: ${error.message}`;
+        await refreshSession(session);
+      } else {
+        void renderManager();
+      }
+    }
+    void initializeAuth();
 
     const sectionObserver = new IntersectionObserver(entries => {
       const current = entries.filter(entry => entry.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
